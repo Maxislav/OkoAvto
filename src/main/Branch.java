@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -11,8 +12,10 @@ public class Branch extends Thread {
     int mes;
     Socket s;
     InputStream is;
+    OutputStream os;
     Parser parser;
     LogTxt log;
+    final String res = "J";
 
     public Branch(int i, Socket s, Bd bd, LogTxt log) {
         bd = bd;
@@ -33,6 +36,7 @@ public class Branch extends Thread {
 
         try {
             this.is = s.getInputStream();
+            this.os = s.getOutputStream();
         } catch (IOException var8) {
             try {
                 s.close();
@@ -75,6 +79,11 @@ public class Branch extends Thread {
                     } else {
                         this.parser.first(data);
                     }
+
+                    byte[] ba = res.getBytes();
+                    os.write(ba);
+                    os.flush();
+
                 }
             } catch (Exception var5) {
                 System.out.println("Error1: " + var5);
