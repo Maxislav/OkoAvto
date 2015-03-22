@@ -66,12 +66,11 @@ public class Branch extends Thread {
                     ++this.mes;
                     System.out.println("");
                     System.out.println("connection:" + this.connection + " mes: " + this.mes + " Data: " + data);
-                    this.log.save(data);
+                   // this.log.save(data);
                     if(this.mes != 1) {
                         if(this.mes > 100) {
                             this.mes = 2;
                         }
-
                         this.parser.next(data);
                     } else {
                         this.parser.first(data);

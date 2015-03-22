@@ -54,7 +54,10 @@ public class Parser {
     public void next(String data) {
         List list = this.setList(data);
 
+
+
         while(!list.isEmpty()) {
+            System.out.println("list data: "+(String)list.remove(0));
             this.params((String)list.remove(0));
         }
 
@@ -79,7 +82,7 @@ public class Parser {
     private List<String> setList(String data) {
         ArrayList allMatches = new ArrayList();
         Matcher m = Pattern.compile("[{][^}]+[}]").matcher(data);
-
+        //System.out.println("list data: "+data));
         while(m.find()) {
             allMatches.add(m.group().replaceAll("[{]|[}]", ""));
         }
@@ -108,7 +111,12 @@ public class Parser {
         if(date != null && date.length() != 0) {
             if(time != null && time.length() != 0) {
                 String[] aDate = date.split("");
-                date = aDate[5] + aDate[6] + aDate[3] + aDate[4] + aDate[1] + aDate[2];
+                if(aDate[0].isEmpty()){
+                    date = aDate[4+1] + aDate[5+1] + aDate[2+1] + aDate[3+1] + aDate[0+1] + aDate[1+1];
+                }else{
+                    date = aDate[4] + aDate[5] + aDate[2] + aDate[3] + aDate[0] + aDate[1];
+                }
+
                 if(time.indexOf(".") != -1) {
                     time = time.split("[.]")[0];
                 }
@@ -149,6 +157,8 @@ public class Parser {
 
     private void convert(Map<String, String> map) {
         String dateTime = this.datetime((String)map.get("date"), (String)map.get("time"));
+       String d = "dds";
+
         map.put("dateTime", dateTime);
         String lat = this.demic((String)map.get("lat"));
         map.put("lat", lat);
@@ -161,18 +171,22 @@ public class Parser {
         String _azimuth = this.azimuth((String)map.get("azimuth"));
         map.put("azimuth", _azimuth);
         System.out.println("imei: " + this.imei + " lat: " + (String)map.get("lat") + " lng:  " + (String)map.get("lng") + " dateTime: " + (String)map.get("dateTime") + " zaryad: " + (String)map.get("zaryad") + " azimuth: " + (String)map.get("azimuth") + " speed:" + (String)map.get("speed") + " sputnik: " + (String)map.get("sputnik"));
-        if(map.get("dateTime") != null && 3 < this.sputnik((String)map.get("sputnik")) && map.get("lat") != null && map.get("lng") != null && !((String)map.get("lat")).equals("null") && !((String)map.get("lng")).equals("null")) {
+        if(map.get("dateTime") != null && 3 < this.sputnik((String)map.get("sputnik")) && map.get("lat") != null && map.get("lng") != null && !(map.get("lat")).equals("null") && !((String)map.get("lng")).equals("null")) {
             this.saveToDb(map);
         } else {
             map.put("dateTime", (new TimeStamp()).getDateTime());
             Map _map = this.bd.getData(this.imei);
             System.out.println("No visible sattelits");
             map.put("lat", (String)_map.get("lat"));
-            System.out.println((String)_map.get("lat"));
             map.put("lng", (String)_map.get("lng"));
             map.put("speed", "0");
             map.put("sputnik", "0");
             this.saveToDb(map);
+        }
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String thing = entry.getValue();
+            System.out.println(key+": "+thing);
         }
 
     }

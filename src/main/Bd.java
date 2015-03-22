@@ -64,7 +64,7 @@ public class Bd {
         try {
             Statement e = stmt;
             synchronized(stmt) {
-                System.out.println(line);
+                //System.out.println(line);
                 stmt.executeUpdate(line);
             }
         } catch (Exception var4) {
@@ -84,22 +84,38 @@ public class Bd {
             var6.printStackTrace();
         }
 
-        System.out.println("1111111");
+     //   System.out.println("1111111");
         String query = "SELECT * FROM log WHERE imei = \'" + imei + "\' AND lat != \'null\' ORDER BY datetime DESC LIMIT 1";
-
+        ResultSet resultSet;
         try {
             stmt.executeQuery(query);
-            ResultSet e = stmt.executeQuery(query);
-
-            while(e.next()) {
-                System.out.println(e.getString("lat"));
-                map.put("lat", e.getString("lat"));
-                map.put("lng", e.getString("lng"));
+            resultSet = stmt.executeQuery(query);
+            while(resultSet.next()) {
+               // System.out.println(resultSet.getString("lat"));
+                map.put("lat", resultSet.getString("lat"));
+                map.put("lng", resultSet.getString("lng"));
             }
         } catch (SQLException var5) {
             var5.printStackTrace();
         }
 
+        if(map.size()==0){
+            query = "SELECT * FROM loghistory WHERE imei = \'" + imei + "\' AND lat != \'null\' ORDER BY datetime DESC LIMIT 1";
+            try {
+                stmt.executeQuery(query);
+                resultSet = stmt.executeQuery(query);
+                while(resultSet.next()) {
+                    System.out.println(resultSet.getString("lat"));
+                    map.put("lat", resultSet.getString("lat"));
+                    map.put("lng", resultSet.getString("lng"));
+                }
+            }catch (SQLException var5) {
+                var5.printStackTrace();
+                System.out.println("Error select fom loghistory");
+            }
+
+
+        }
         return map;
     }
 }
