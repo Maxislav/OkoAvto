@@ -98,6 +98,8 @@ public class Bd {
         } catch (SQLException var5) {
             var5.printStackTrace();
         }
+//{012207005768384,211728,A,5023.266,N,03029.601,E,0.2,129,220315,5,00,F9,67,1,,,,,,,D5,,,80.981,M,3,,}
+//{211634,V,,,,,0.7,138,220315,3,00,F9,67,1,,,,,,,D5,,,,M,3,,}
 
         if(map.size()==0){
             query = "SELECT * FROM loghistory WHERE imei = \'" + imei + "\' AND lat != \'null\' ORDER BY datetime DESC LIMIT 1";

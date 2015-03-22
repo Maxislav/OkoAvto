@@ -57,7 +57,7 @@ public class Parser {
 
 
         while(!list.isEmpty()) {
-            System.out.println("list data: "+(String)list.remove(0));
+            //System.out.println("list data: "+(String)list.remove(0));
             this.params((String)list.remove(0));
         }
 
@@ -106,7 +106,8 @@ public class Parser {
             return s;
         }
     }
-
+    //{012207005768384,211728,A,5023.266,N,03029.601,E,0.2,129,220315,5,00,F9,67,1,,,,,,,D5,,,80.981,M,3,,}
+//{211634,V,,,,,0.7,138,220315,3,00,F9,67,1,,,,,,,D5,,,,M,3,,}
     private String datetime(String date, String time) {
         if(date != null && date.length() != 0) {
             if(time != null && time.length() != 0) {
@@ -157,7 +158,7 @@ public class Parser {
 
     private void convert(Map<String, String> map) {
         String dateTime = this.datetime((String)map.get("date"), (String)map.get("time"));
-       String d = "dds";
+        String d = "dds";
 
         map.put("dateTime", dateTime);
         String lat = this.demic((String)map.get("lat"));
