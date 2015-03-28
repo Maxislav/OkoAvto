@@ -73,7 +73,7 @@ public class Bd {
 
     }
 
-    public Map<String, String> getData(String imei) {
+    public synchronized Map<String, String> getData(String imei) {
         HashMap map = new HashMap();
 
         try {
@@ -82,6 +82,14 @@ public class Bd {
             }
         } catch (SQLException var6) {
             var6.printStackTrace();
+        }
+
+        try {
+            if(stmt.isClosed()){
+                stmt = connection.createStatement();
+            }
+        }catch (SQLException e){
+            System.out.println("Error reconnect stmt: "+e);
         }
 
      //   System.out.println("1111111");
@@ -97,6 +105,7 @@ public class Bd {
             }
         } catch (SQLException var5) {
             var5.printStackTrace();
+            System.out.println("Error select from log");
         }
 //{012207005768384,211728,A,5023.266,N,03029.601,E,0.2,129,220315,5,00,F9,67,1,,,,,,,D5,,,80.981,M,3,,}
 //{211634,V,,,,,0.7,138,220315,3,00,F9,67,1,,,,,,,D5,,,,M,3,,}
@@ -113,7 +122,7 @@ public class Bd {
                 }
             }catch (SQLException var5) {
                 var5.printStackTrace();
-                System.out.println("Error select fom loghistory");
+                System.out.println("Error select from loghistory");
             }
 
 

@@ -36,7 +36,7 @@ public class OkoAvto {
             var8.printStackTrace();
         }
 
-        System.out.println("Version 22.03.15");
+        System.out.println("Version 28.03.15");
         Bd bd1 = new Bd(root, pass, url, table);
         bd1.connect();
         new Server(10002, bd1);
